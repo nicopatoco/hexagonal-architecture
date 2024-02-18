@@ -12,7 +12,7 @@ export class AuthenticationService implements AuthenticationServicePort {
     if (existingUser) {
       throw new DomainError('Username already exists');
     }
-    const hashedPassword = PasswordService.hashPassword(password);
+    const hashedPassword = await PasswordService.hashPassword(password);
     const newUser = new User(Date.now().toString(), username, hashedPassword);
     await this.userRepository.save(newUser);
     return newUser;
