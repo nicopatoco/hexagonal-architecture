@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { AuthenticationService } from '../../../../application/services/AuthenticationService';
 import { UserRepository } from '../../repositories/UserRepository';
-import { DomainError } from '../../../../domain/errors/DomainError';
 
 // Instantiate the necessary components
 const userRepository = new UserRepository(); // This will later be replaced with a real database implementation
@@ -14,9 +13,6 @@ const userRoutes = Router();
 userRoutes.post('/register', async (req, res) => {
   try {
     const { username, password } = req.body;
-    if (!username || !password) {
-      throw new DomainError('Bad request');
-    }
     await authenticationService.register(username, password);
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
@@ -28,9 +24,6 @@ userRoutes.post('/register', async (req, res) => {
 userRoutes.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
-    if (!username || !password) {
-      throw new DomainError('Bad request');
-    }
     const success = await authenticationService.login(username, password);
     if (success) {
       res.status(200).json({ message: 'Login successful' });

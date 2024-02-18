@@ -8,6 +8,9 @@ export class AuthenticationService implements AuthenticationServicePort {
   constructor(private userRepository: UserRepositoryPort) {}
 
   async register(username: string, password: string): Promise<User> {
+    if (!username || !password) {
+      throw new DomainError('Username and password are required.');
+    }
     const existingUser = await this.userRepository.findByUsername(username);
     if (existingUser) {
       throw new DomainError('Username already exists');
@@ -19,6 +22,9 @@ export class AuthenticationService implements AuthenticationServicePort {
   }
 
   async login(username: string, password: string): Promise<boolean> {
+    if (!username || !password) {
+      throw new DomainError('Username and password are required.');
+    }
     const user = await this.userRepository.findByUsername(username);
     if (!user) {
       throw new DomainError('User not found');
