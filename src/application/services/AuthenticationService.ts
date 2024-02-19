@@ -5,7 +5,10 @@ import { User } from '../../domain/models/User';
 import { DomainError } from '../../domain/errors/DomainError';
 
 export class AuthenticationService implements AuthenticationServicePort {
-  constructor(private userRepository: UserRepositoryPort) {}
+  constructor(
+    private userRepository: UserRepositoryPort,
+    private passwordService: PasswordService
+  ) {}
 
   async register(username: string, password: string): Promise<User> {
     if (!username || !password) {
@@ -15,7 +18,7 @@ export class AuthenticationService implements AuthenticationServicePort {
     if (existingUser) {
       throw new DomainError('Username already exists');
     }
-    const hashedPassword = await PasswordService.hashPassword(password);
+    const hashedPassword = await this.passwordService.hashPassword(password);
     const newUser = new User(Date.now().toString(), username, hashedPassword);
     await this.userRepository.save(newUser);
     return newUser;
@@ -29,6 +32,6 @@ export class AuthenticationService implements AuthenticationServicePort {
     if (!user) {
       throw new DomainError('User not found');
     }
-    return PasswordService.verifyPassword(user.password, password);
+    return this.passwordService.verifyPassword(user.password, password);
   }
 }

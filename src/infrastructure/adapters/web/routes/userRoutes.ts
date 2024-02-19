@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import { AuthenticationService } from '../../../../application/services/AuthenticationService';
 import { UserRepository } from '../../repositories/UserRepository';
+import { PasswordService } from '../../../../domain/services/PasswordService';
 
 // Instantiate the necessary components
 const userRepository = new UserRepository(); // This will later be replaced with a real database implementation
-const authenticationService = new AuthenticationService(userRepository);
+const passwordService = new PasswordService();
+const authenticationService = new AuthenticationService(userRepository, passwordService);
 
 // Create a router for user-related endpoints
 const userRoutes = Router();
