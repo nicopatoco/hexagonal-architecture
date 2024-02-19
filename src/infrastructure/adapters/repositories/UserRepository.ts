@@ -1,16 +1,19 @@
 import { UserRepositoryPort } from '../../../application/ports/UserRepositoryPort';
 import { User } from '../../../domain/models/User';
+import { getDb } from '../../database/mongoDBConnection';
 
 export class UserRepository implements UserRepositoryPort {
-  // A mock implementation of the UserRepositoryPort for testing without a database.
-  private users: User[] = [];
+  private db = getDb();
+  private collection = this.db.collection<User>('users');
 
   async findByUsername(username: string): Promise<User | null> {
-    return this.users.find((user) => user.username === username) || null;
+    const user = await this.collection.findOne({ username });
+    return user;
   }
 
   async save(user: User): Promise<User> {
-    this.users.push(user);
+    // const result = await this.collection.insertOne(user);
+    await this.collection.insertOne(user);
     return user;
   }
 }

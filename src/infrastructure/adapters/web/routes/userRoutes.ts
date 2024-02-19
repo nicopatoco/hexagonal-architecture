@@ -4,7 +4,7 @@ import { UserRepository } from '../../repositories/UserRepository';
 import { PasswordService } from '../../../../domain/services/PasswordService';
 
 // Instantiate the necessary components
-const userRepository = new UserRepository(); // This will later be replaced with a real database implementation
+const userRepository = new UserRepository();
 const passwordService = new PasswordService();
 const authenticationService = new AuthenticationService(userRepository, passwordService);
 

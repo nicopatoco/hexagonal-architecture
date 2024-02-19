@@ -9,6 +9,7 @@ These instructions will get your copy of the project up and running on your loca
 ### Prerequisites
 
 Before you begin, ensure you have the following installed on your system:
+- docker
 - Node.js
 - yarn
 
@@ -24,6 +25,10 @@ cd my-express-ts-app```
 
 ```bash
 yarn install
+```
+
+```bash
+docker-compose up -d
 ```
 
 ## Build the TypeScript project

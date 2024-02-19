@@ -1,19 +1,26 @@
+import { connectToDatabase } from '../../database/mongoDBConnection';
 import express from 'express';
-import userRoutes from './routes/userRoutes';
 import corse from 'cors';
 import morgan from 'morgan';
 
-const app = express();
+const startServer = async () => {
+  await connectToDatabase();
 
-app.use(corse()); // to allow cross origin request
-app.use(morgan('dev')); // dev logging
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+  const app = express();
+  app.use(corse());
+  app.use(morgan('dev'));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
-// Use the user routes
-app.use('/api/users', userRoutes);
+  // Dynamically import user routes after database connection
+  const userRoutes = (await import('./routes/userRoutes')).default;
+  app.use('/api/users', userRoutes);
 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+  const PORT = process.env.PORT || 3000;
+
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+};
+
+startServer().catch(console.error);
