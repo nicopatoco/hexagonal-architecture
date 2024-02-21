@@ -1,7 +1,10 @@
-export class User {
-  constructor(
-    public id: string,
-    public username: string,
-    public password: string // In a real application, this should be hashed
-  ) {}
+export interface User {
+  email: string;
+  password: string;
 }
+
+export interface RepoUser extends User {
+  id: string;
+}
+
+export type ExternalUser = Omit<RepoUser, 'password'>;

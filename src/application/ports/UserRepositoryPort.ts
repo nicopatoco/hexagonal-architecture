@@ -1,6 +1,6 @@
-import { User } from '../../domain/models/User';
+import { ExternalUser, RepoUser, User } from '../../domain/models/User';
 
 export interface UserRepositoryPort {
-  findByUsername(username: string): Promise<User | null>;
-  save(user: User): Promise<User>;
+  findByEmail(email: string): Promise<RepoUser | null>;
+  save(user: User): Promise<ExternalUser>;
 }
