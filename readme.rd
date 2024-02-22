@@ -13,6 +13,11 @@ Before you begin, ensure you have the following installed on your system:
 - Node.js
 - yarn
 
+Only for testing
+- create a file in your root directory 
+    - testSetup.js
+        process.env.JWT_SECRET = 'your_test_secret';
+
 ### Installation
 
 1. **Clone the repository**

@@ -1,6 +1,7 @@
 import { ExternalUser, RepoUser } from '../../domain/models/User';
 import { PasswordService } from '../../domain/services/PasswordService';
 import { UserRepository } from '../../infrastructure/adapters/repositories/UserRepository';
+import { JWTTokenManager } from '../../infrastructure/adapters/security/JWTTokenManager';
 import { AuthenticationService } from './AuthenticationService';
 
 // Mock the UserRepository
@@ -12,8 +13,9 @@ const createService = () => {
   // Create a mocked instance of UserRepository
   const mockedUserRepository = new UserRepository() as jest.Mocked<UserRepository>;
   const passwordService = new PasswordService() as jest.Mocked<PasswordService>;
+  const tokenSerive = new JWTTokenManager();
 
-  const authenticationService = new AuthenticationService(mockedUserRepository, passwordService);
+  const authenticationService = new AuthenticationService(mockedUserRepository, passwordService, tokenSerive);
   return { authenticationService, userRepository: mockedUserRepository, passwordService };
 };
 

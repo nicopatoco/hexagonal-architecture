@@ -4,12 +4,12 @@ import { UserRepository } from '../../repositories/UserRepository';
 import { PasswordService } from '../../../../domain/services/PasswordService';
 import { loginSchema, registerSchema } from '../../../../application/dtos/AuthenticatedUser';
 import { z } from 'zod';
-import { TokenService } from '../../../../domain/services/TokenService';
+import { JWTTokenManager } from '../../security/JWTTokenManager';
 
 // Instantiate the necessary components
 const userRepository = new UserRepository();
 const passwordService = new PasswordService();
-const tokenService = new TokenService();
+const tokenService = new JWTTokenManager();
 const authenticationService = new AuthenticationService(userRepository, passwordService, tokenService);
 
 export const userRoutes = {

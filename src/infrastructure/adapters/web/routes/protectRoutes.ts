@@ -1,11 +1,7 @@
-import jwt from 'jsonwebtoken';
-import { ExternalUser } from '../../../domain/models/User';
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import { JWTTokenManager } from '../../security/JWTTokenManager';
 
-export const createJWT = (user: ExternalUser): string => {
-  const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET as string);
-  return token;
-};
+const jwtTokenManager = new JWTTokenManager();
 
 export const protect = (req: Request, res: Response, next: NextFunction) => {
   const bearer = req.headers.authorization; // check if there is a token
@@ -24,7 +20,7 @@ export const protect = (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const user = jwt.verify(token, process.env.JWT_SECRET as string);
+    const user = jwtTokenManager.verifyToken(token);
     console.log('user: ', user);
     next();
   } catch (error) {
