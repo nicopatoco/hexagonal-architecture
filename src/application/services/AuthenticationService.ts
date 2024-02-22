@@ -1,15 +1,15 @@
 import { DomainError } from '../../domain/errors/DomainError';
 import { User } from '../../domain/models/User';
-import { PasswordService } from '../../domain/services/PasswordService';
 import { AuthenticatedUser } from '../dtos/AuthenticatedUser';
 import { AuthenticationServicePort } from '../ports/AuthenticationServicePort';
+import { PasswordHashingPort } from '../ports/PasswordHashingPort';
 import { TokenServicePort } from '../ports/TokenServicePort';
 import { UserRepositoryPort } from '../ports/UserRepositoryPort';
 
 export class AuthenticationService implements AuthenticationServicePort {
   constructor(
     readonly userRepository: UserRepositoryPort,
-    readonly passwordService: PasswordService,
+    readonly passwordService: PasswordHashingPort,
     readonly tokenService: TokenServicePort
   ) {}
 

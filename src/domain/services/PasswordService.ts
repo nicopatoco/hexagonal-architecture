@@ -1,6 +1,7 @@
+import { PasswordHashingPort } from '../../application/ports/PasswordHashingPort';
 import { hashPassword, verifyPassword } from '../../infrastructure/adapters/security/PasswordHasher';
 
-export class PasswordService {
+export class PasswordService implements PasswordHashingPort {
   hashPassword(password: string): Promise<string> {
     return hashPassword(password);
   }
