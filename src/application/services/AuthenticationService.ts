@@ -1,14 +1,16 @@
 import { DomainError } from '../../domain/errors/DomainError';
 import { User } from '../../domain/models/User';
 import { PasswordService } from '../../domain/services/PasswordService';
+import { TokenService } from '../../domain/services/TokenService';
 import { AuthenticatedUser } from '../dtos/AuthenticatedUser';
 import { AuthenticationServicePort } from '../ports/AuthenticationServicePort';
 import { UserRepositoryPort } from '../ports/UserRepositoryPort';
 
 export class AuthenticationService implements AuthenticationServicePort {
   constructor(
-    private userRepository: UserRepositoryPort,
-    private passwordService: PasswordService
+    readonly userRepository: UserRepositoryPort,
+    readonly passwordService: PasswordService,
+    readonly tokenService: TokenService
   ) {}
 
   async register(email: string, password: string): Promise<AuthenticatedUser> {
@@ -24,7 +26,7 @@ export class AuthenticationService implements AuthenticationServicePort {
     const repoUser = await this.userRepository.save(newUser);
 
     // Generate a token and return the authenticated user
-    const token = ''; /* Generate or retrieve a token */
+    const token = this.tokenService.createJWT(repoUser);
     return { id: repoUser.id, email, token };
   }
 
@@ -44,7 +46,7 @@ export class AuthenticationService implements AuthenticationServicePort {
     }
 
     // Generate a token and return the authenticated user
-    const token = ''; //await this.createToken(user);
-    return { email: user.email, id: user.id, token };
+    const token = this.tokenService.createJWT(user);
+    return { id: user.id, email, token };
   }
 }
